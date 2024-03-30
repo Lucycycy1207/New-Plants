@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Diagnostics;
 
 public class SellHarvestUIElement : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class SellHarvestUIElement : MonoBehaviour
     [SerializeField] Image _imgPlant;
 
     [SerializeField] private Button _btnSell;
+
 
     public CollectedHarvest _harvestElement { get; private set; }
     public void SetElement(CollectedHarvest harvestElement, string plantName, string timeStamp, float valuePerItem, int amount, Sprite sprite)
@@ -32,7 +34,7 @@ public class SellHarvestUIElement : MonoBehaviour
         {
             // Assignment 2
             // Call the shop to sell the harvest
-
+            Shop._instance.SellHarvest(_harvestElement, plantName, valuePerItem, amount);
             Destroy(gameObject);
         });
     }

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Shop : MonoBehaviour
@@ -9,9 +7,19 @@ public class Shop : MonoBehaviour
 
     public Action<float> OnCoinsChanged;
 
+    public static Shop _instance { get; private set; }
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        _instance = this;
+    }
     public void BuySeed(string name, float price)
     {
-        if(_coins >= price)
+        if (_coins >= price)
         {
             _coins -= price;
             Planter._instance.AddSeeds(name, 1);
@@ -19,7 +27,7 @@ public class Shop : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not rnough coins to buy seeds");
+            Debug.Log("Not enough coins to buy seeds");
             UIManager._instance.UpdateStatus("Not enough coins");
         }
         
@@ -27,5 +35,12 @@ public class Shop : MonoBehaviour
 
     //Assignment 2
     // Get the harvest, add coins for the value, update UI and remove the item from the data structure
+    public void SellHarvest(CollectedHarvest _harvestElement, string _plantName, float pricePerItem, int HarvestAmount)
+    {
+        //Debug.Log("sellharvest called");
+        _coins += pricePerItem * HarvestAmount;
+        OnCoinsChanged(_coins);
+        Harvester._instance.RemoveHarvest(_harvestElement);
+    }
 
 }

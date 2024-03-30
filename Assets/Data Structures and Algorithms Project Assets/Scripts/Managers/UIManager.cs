@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -18,6 +20,26 @@ public class UIManager : MonoBehaviour
     [Header("Shop-SELL")]
     [SerializeField] private Transform _sellHarvestHolder;
     [SerializeField] private SellHarvestUIElement _sellHarvestUIElement;
+
+
+    //Assignment2
+    public void ShowTotalHarvest(CollectedHarvest harvest)
+    {
+        SellHarvestUIElement sellHarvestUIElement = Instantiate(_sellHarvestUIElement, _sellHarvestHolder);
+
+        PlantTypeScriptableObject item = Planter._instance.GetPlantResourseByName(harvest._name);
+
+        sellHarvestUIElement.SetElement(harvest, harvest._name, harvest._time, item._pricePerHarvest, harvest._amount, item._harvestSprite);
+    }
+    public void ClearHarvest()
+    {
+        for (int i = 0; i < _sellHarvestHolder.childCount; i++)
+        {
+            Destroy(_sellHarvestHolder.GetChild(i).gameObject);
+        }
+        
+    }
+
 
     public static UIManager _instance { get; private set; }
 
@@ -38,6 +60,7 @@ public class UIManager : MonoBehaviour
 
     public void InitializePlantUIs(PlantTypeScriptableObject[] _plantTypes)
     {
+        
         foreach (var item in _plantTypes)
         {
             GameObject seedButton = Instantiate(_seedButtonUI, _seedsUIHolder);
@@ -62,11 +85,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ShowTotalHarvest()
-    {
-        //Assignment 2
-        
-    }
+
 
     
+
+
+
+
 }
